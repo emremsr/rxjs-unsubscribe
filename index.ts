@@ -1,21 +1,5 @@
-import './style.css';
+import { ajax } from 'rxjs/ajax';
 
-import { Observable, Subscriber } from 'rxjs';
+const users = ajax<any>('https://random-data-api.com/api/name/random_name');
 
-const counter = new Observable<number>((Subscriber) => {
-  let count = 1;
-  const IntervalId = setInterval(() => {
-    console.log('Number : ', count);
-    Subscriber.next(count++);
-  }, 1000);
-  return () => {
-    clearInterval(IntervalId);
-  };
-});
-
-const stop = counter.subscribe((value) => console.log(value));
-
-setTimeout(() => {
-  console.log('Finished');
-  stop.unsubscribe();
-}, 5000);
+users.subscribe((data) => console.log(data.response.first_name));
